@@ -31,9 +31,21 @@ pipeline {
                     withSonarQubeEnv('sonarqube') {
                         sh "${ScannerHome}/bin/sonar-scanner -Dsonar.projectKey=jomacs"
                     }
+
+                    stage ('Upload to Nexus') {
+                        steps {
+                            nexusArtifactUploader credentialsId: 'nexus-id', groupId: 'com.devops.maven', nexusUrl: '35.94.144.94:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'mavenwebapp-snapshot', version: '1.0-SNAPSHOT'
+                        }
+                    }
                 }
             }
         } 
+
+        stage ('Deploy to Tomcat') {
+            stage {
+                deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', path: '', url: 'http://34.219.120.95:8080/')], contextPath: null, war: 'target/*.war'
+            }
+        }
 
     }
 }
