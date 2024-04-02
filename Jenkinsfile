@@ -34,7 +34,7 @@ pipeline {
 
                     stage ('Upload to Nexus') {
                         steps {
-                            nexusArtifactUploader credentialsId: 'nexus-id', groupId: 'com.devops.maven', nexusUrl: '35.94.144.94:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'mavenwebapp-snapshot', version: '1.0-SNAPSHOT'
+                            nexusArtifactUploader artifacts: [[artifactId: 'earth-app', classifier: '', file: '/var/lib/jenkins/workspace/maven-build-website/target/earth-app-1.0-SNAPSHOT.war', type: 'war']], credentialsId: 'nexus-id', groupId: 'com.devops.maven', nexusUrl: '35.94.144.94:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'mavenwebapp-snapshot', version: '1.0-SNAPSHOT'
                         }
                     }
                 }
